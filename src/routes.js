@@ -21,7 +21,6 @@ routes.put('/users', UserController.update);
 
 // sigle indica que queromos fazer o upload de apenas uma imagem
 routes.post('/files', upload.single('file'), (req, res) => {
-  console.log(req);
   return res.json(req.file);
 });
 
