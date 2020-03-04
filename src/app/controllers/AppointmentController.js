@@ -1,8 +1,10 @@
 import * as Yup from 'yup';
-import { startOfHour, parseISO, isBefore } from 'date-fns';
+import { startOfHour, parseISO, isBefore, format } from 'date-fns';
+import pt from 'date-fns/locale/pt';
 import Appointment from '../models/Appointment';
 import User from '../models/User';
 import File from '../models/File';
+import Notification from '../schemas/Notification';
 
 class AppointmentController {
   async index(req, res) {
@@ -46,6 +48,12 @@ class AppointmentController {
 
     const { provider_id, date } = req.body;
 
+    if (provider_id === req.userId) {
+      return res
+        .status(401)
+        .json({ error: 'Agendamento tem que ser diferente do seu usuário' });
+    }
+
     /* cheque se é um  provedor de serviço */
     const checkIsProvider = await User.findOne({
       where: { id: provider_id, provider: true },
@@ -84,6 +92,19 @@ class AppointmentController {
       user_id: req.userId,
       provider_id,
       date: hourStart, // hourStart faz com que a hora do agendamento não seja quebranda
+    });
+
+    /* quando ele cadastrar um novo agendamento cadastre uma notificação para o provaider  no
+    mongoDB */
+
+    const user = await User.findByPk(req.userId);
+    const formatedDate = format(hourStart, "'dia' dd 'de' MMMM', às' H:mm'h'", {
+      locale: pt,
+    });
+
+    Notification.create({
+      content: `Novo agendamento de ${user.name} para o ${formatedDate}`,
+      user: provider_id,
     });
 
     return res.json(appointment);
