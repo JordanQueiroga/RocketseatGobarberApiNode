@@ -21,7 +21,6 @@ class NotificationController {
   }
 
   async update(req, res) {
-    console.log('aki');
     const notification = await Notification.findByIdAndUpdate(
       req.params.id,
       { read: true }, // atualiza no banco essa coluna
