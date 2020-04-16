@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import Queue from './lib/Queue';
 /*
 Podemos excutar a nossa lista de jobs em outra máquisa, para isso criamos este arquivo separado,

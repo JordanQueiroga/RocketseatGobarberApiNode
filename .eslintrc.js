@@ -17,7 +17,7 @@ module.exports = {
     "linebreak-style": ["error", "windows"],
     "no-param-reassign": "off",
     "camelcase": "off",
-    "no-unused-vars": ["error", { "argsIgnoreParttern": "next" }],
+    "no-unused-vars": ["error", { "argsIgnorePattern": "next" }],
     "class-methods-use-this": "off",
     "prettier/prettier": "error"
   },
