@@ -7,7 +7,9 @@ const jobs = [CancellationsMail];
 class Queue {
   constructor() {
     this.queues = {};
-    this.init();
+    if (process.env.NODE_ENV !== 'test') {
+      this.init();
+    }
   }
 
   init() {
